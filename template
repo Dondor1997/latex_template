@@ -9,11 +9,12 @@ DIR="/home/domnik/Documents/latex/templates/"
 
 if [ "$1" != "" ]; then
 		if [ "$2" != "" ]; then
-				cp $DIR$1.tex $2$1.tex
+				cp $DIR$1.tex &(pwd)/$2.tex
+				vim $2.tex
 		else
 				cp $DIR$1.tex $(pwd)/$1.tex
+				vim $1.tex
 		fi
-		vim $1.tex
 else
 		echo "usage: template <name>"
 fi
