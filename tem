@@ -9,7 +9,7 @@ DIR="/home/domnik/Documents/latex/templates/"
 
 if [ "$1" != "" ]; then
 		if [ "$2" != "" ]; then
-				cp $DIR$1.tex &(pwd)/$2.tex
+				cp $DIR$1.tex $(pwd)/$2.tex
 				vim $2.tex
 		else
 				cp $DIR$1.tex $(pwd)/$1.tex
