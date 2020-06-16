@@ -9,11 +9,19 @@ DIR="/home/domnik/Documents/latex/templates/"
 
 if [ "$1" != "" ]; then
 		if [ "$2" != "" ]; then
-				cp $DIR$1.tex $(pwd)/$2.tex
-				vim $2.tex
+				if [ -f "$(pwd)/$2.tex" ]; then
+					echo "File already exists"
+				else
+					cp $DIR$1.tex $(pwd)/$2.tex
+					vim $2.tex
+				fi
 		else
-				cp $DIR$1.tex $(pwd)/$1.tex
-				vim $1.tex
+				if [ -f "$(pwd)/$2.tex" ]; then
+					echo "File already exists"
+				else
+					cp $DIR$1.tex $(pwd)/$1.tex
+					vim $1.tex
+				fi
 		fi
 else
 		echo "usage: template <name>"
