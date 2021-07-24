@@ -1,28 +1,34 @@
-#!/bin/bash
+#!/bin/python
 
-# sysinfo_page - A script to copy latex templates from one directory to another
+import os
+import pathlib
+import argparse
+import shutil
 
-#### Constants
-DIR="/home/domnik/Documents/latex/templates/"
+home = pathlib.Path.home()
+cwd = os.getcwd()
+templates = os.listdir(f"{home}/Templates/latex")
 
-#### Functions
+parser = argparse.ArgumentParser(description='Copy and rename latex templates')
+parser.add_argument('template', type=str, help='Name of a template', nargs=1, choices=templates)
+parser.add_argument('name', type=str, help='New file name', nargs='?')
 
-if [ "$1" != "" ]; then
-		if [ "$2" != "" ]; then
-				if [ -f "$(pwd)/$2.tex" ]; then
-					echo "File already exists"
-				else
-					cp $DIR$1.tex $(pwd)/$2.tex
-					vim $2.tex
-				fi
-		else
-				if [ -f "$(pwd)/$2.tex" ]; then
-					echo "File already exists"
-				else
-					cp $DIR$1.tex $(pwd)/$1.tex
-					vim $1.tex
-				fi
-		fi
-else
-		echo "usage: template <name>"
-fi
+args = vars(parser.parse_args())
+
+template = args["template"][0]
+
+if args["name"] == None:
+    name = template
+else:
+    name = args["name"]
+
+src = f"{home}/Templates/latex/{template}"
+dst = f"{cwd}/{name}"
+
+try:
+    shutil.copytree(src, dst, dirs_exist_ok=False)
+    shutil.move(f"{dst}/{template}.tex", f"{dst}/{name}.tex")
+except FileExistsError:
+    print(f"File {name} already exists")
+
+
